@@ -17,6 +17,7 @@ const passwordEncryption = async (req, res, next) => {
     console.log(e);
     return res.status(500).json({
       success: false,
+      code: 500,
       message: 'unhandled error',
     });
   }

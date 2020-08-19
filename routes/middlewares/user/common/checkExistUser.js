@@ -11,11 +11,13 @@ const checkExistUser = async (req, res, next) => {
 
   switch (req.path) {
     case '/register':
-      user.length ? res.status(412).json({ success: false, message: 'exist user' }) : next();
+      user.length
+        ? res.status(412).json({ success: false, code: 412, message: 'exist user' })
+        : next();
       break;
     case '/login':
       !user.length
-        ? res.status(412).json({ success: false, message: 'not found user' })
+        ? res.status(412).json({ success: false, code: 412, message: 'not found user' })
         : ((res.locals.user = user), next());
       break;
   }

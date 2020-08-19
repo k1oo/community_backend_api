@@ -7,6 +7,7 @@ const checkValidation = (req, res, next) => {
     console.log(errors);
     return res.status(412).json({
       success: false,
+      code: 412,
       message: 'wrong data',
     });
   }

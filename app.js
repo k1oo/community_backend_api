@@ -24,6 +24,7 @@ app.use('/api', apiController);
 app.use((_, res) => {
   return res.status(404).json({
     success: false,
+    code: 404,
     message: 'not found page',
   });
 });
