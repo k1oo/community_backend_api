@@ -4,19 +4,17 @@ import { catchDBError } from '../../../../error';
 const checkExistUser = async (req, res, next) => {
   const { id, nickname } = req.body;
 
-  const user = await QUERY`
+  const [user] = await QUERY`
     SELECT * FROM users
       ${Wor({ id }, { nickname })}
   `.catch(catchDBError(res));
 
   switch (req.path) {
     case '/register':
-      user.length
-        ? res.status(412).json({ success: false, code: 412, message: 'exist user' })
-        : next();
+      user ? res.status(412).json({ success: false, code: 412, message: 'exist user' }) : next();
       break;
     case '/login':
-      !user.length
+      !user
         ? res.status(412).json({ success: false, code: 412, message: 'not found user' })
         : ((res.locals.user = user), next());
       break;
