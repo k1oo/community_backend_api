@@ -15,7 +15,7 @@ export const POOL = CONNECT({
   database: process.env.DB_NAME,
 });
 
-export const { QUERY, EQ, SQL } = POOL;
+export const { QUERY, EQ, SQL, SET } = POOL;
 
 export const toEQ = (v) => {
   return match(v).case(isFunction)(identity).else(EQ);
@@ -38,3 +38,7 @@ export const or = merge(SQL`OR`);
 export const WQ = (sql) => SQL`WHERE ${toEQ(sql)}`;
 
 export const Wor = (...sqls) => WQ(or(...sqls));
+
+export const findUserByPk = (user_pk) => {
+  return QUERY`SELECT * FROM users ${WQ({ pk: user_pk })}`;
+};
