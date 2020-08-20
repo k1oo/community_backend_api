@@ -25,6 +25,9 @@ import patchUserPasswordValidation from '../middlewares/user/patch/password/_val
 import patchUserNicknameValidation from '../middlewares/user/patch/nickname/_validation';
 import patchNickname from '../middlewares/user/patch/nickname/patchNickname';
 
+// getUser (get my info)
+import getUser from '../middlewares/user/get/getUser';
+
 const router = Router();
 
 router.post('/register', registerValidation);
@@ -41,5 +44,6 @@ router.use(verifyToken);
 
 router.patch('/password', passwordEncryption, patchPassword);
 router.patch('/nickname', patchNickname);
+router.get('/', getUser);
 
 export default router;
