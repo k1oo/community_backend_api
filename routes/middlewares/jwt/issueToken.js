@@ -3,11 +3,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const issueToken = async (req, res, next) => {
+const issueToken = async (_, res) => {
   const { pk } = res.locals.user;
 
   try {
-    const token = jwt.sign({ data: pk }, process.env.TOKEN_SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ pk: pk }, process.env.TOKEN_SECRET_KEY, { expiresIn: '1h' });
 
     return res.json({
       success: true,
