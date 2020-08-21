@@ -10,7 +10,13 @@ import checkValidation from '../middlewares/common/checkValidation';
 import postBoardValidation from '../middlewares/board/post/_validation';
 import postBoard from '../middlewares/board/post/postBoard';
 
+// getBoard
+import getBoardValidation from '../middlewares/board/get/_validation';
+import getBoard from '../middlewares/board/get/getBoard';
+
 const router = Router();
+
+router.get('/', getBoardValidation, checkValidation, getBoard);
 
 router.use(verifyToken);
 
