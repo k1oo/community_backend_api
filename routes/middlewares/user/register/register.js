@@ -1,6 +1,5 @@
-import { POOL } from '../../../../db';
+import { QUERY, VALUES } from '../../../../db';
 import { catchDBError } from '../../../../error';
-const { QUERY, VALUES } = POOL;
 
 const register = async (req, res) => {
   const { id, nickname } = req.body;
