@@ -1,6 +1,6 @@
 import _ from 'fxjs/Strict';
 
-import { SQL, WQ, no_del, ASSOCIATE, WanD, CL } from '../../../../db';
+import { SQL, WQ, no_del, ASSOCIATE, WanD, CL, QUERY, SET } from '../../../../db';
 import { catchDBError } from '../../../../error';
 
 const getBoard = async (req, res) => {
@@ -52,6 +52,17 @@ const getBoard = async (req, res) => {
       boards
     )
   );
+
+  if (type == 'post') {
+    await QUERY`
+      UPDATE boards 
+        ${SET({
+          viewCount: ++responseData[0].viewCount,
+        })} 
+        ${WQ({
+          pk: responseData[0].pk,
+        })}`.catch(catchDBError(res));
+  }
 
   return res.json({
     success: true,
