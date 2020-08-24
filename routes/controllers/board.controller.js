@@ -18,6 +18,10 @@ import getBoard from '../middlewares/board/get/getBoard';
 import patchBoardValidation from '../middlewares/board/patch/_validation';
 import patchBoard from '../middlewares/board/patch/patchBoard';
 
+// deleteBoard
+import deleteBoardValidation from '../middlewares/board/delete/_validation';
+import deleteBoard from '../middlewares/board/delete/deleteBoard';
+
 const router = Router();
 
 router.get('/', getBoardValidation, checkValidation, getBoard);
@@ -26,10 +30,12 @@ router.use(verifyToken);
 
 router.post('/', postBoardValidation);
 router.patch('/', patchBoardValidation);
+router.delete('/', deleteBoardValidation);
 
 router.use(checkValidation);
 
 router.post('/', postBoard);
 router.patch('/', patchBoard);
+router.delete('/', deleteBoard);
 
 export default router;
