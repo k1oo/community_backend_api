@@ -22,6 +22,10 @@ import patchBoard from '../middlewares/board/patch/patchBoard';
 import deleteBoardValidation from '../middlewares/board/delete/_validation';
 import deleteBoard from '../middlewares/board/delete/deleteBoard';
 
+// post boardLike
+import postBoardLikeValidation from '../middlewares/board/like/_validation';
+import postBoardLike from '../middlewares/board/like/postBoardLike';
+
 const router = Router();
 
 router.get('/', getBoardValidation, checkValidation, getBoard);
@@ -31,11 +35,13 @@ router.use(verifyToken);
 router.post('/', postBoardValidation);
 router.patch('/', patchBoardValidation);
 router.delete('/', deleteBoardValidation);
+router.post('/like', postBoardLikeValidation);
 
 router.use(checkValidation);
 
 router.post('/', postBoard);
 router.patch('/', patchBoard);
 router.delete('/', deleteBoard);
+router.post('/like', postBoardLike);
 
 export default router;
