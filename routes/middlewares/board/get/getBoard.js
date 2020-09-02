@@ -30,6 +30,7 @@ const getBoard = async (req, res) => {
       < comments ${{
         left_key: 'pk',
         key: 'board_pk',
+        query: SQL`${WQ(is_null('recomment_pk'))}`,
       }}
         - user ${{
           left_key: 'user_pk',
@@ -37,6 +38,16 @@ const getBoard = async (req, res) => {
           table: 'users',
           column: CL('nickname'),
         }}
+        < comments ${{
+          left_key: 'pk',
+          key: 'recomment_pk',
+        }}
+          - user ${{
+            left_key: 'user_pk',
+            key: 'pk',
+            table: 'users',
+            column: CL('nickname'),
+          }}
       `.catch(catchDBError(res));
 
   console.log(boards);
@@ -70,6 +81,18 @@ const getBoard = async (req, res) => {
             user: {
               nickname: comment._.user.nickname,
             },
+            recomments: _.map(
+              (recomment) => ({
+                pk: recomment.pk,
+                content: recomment.content,
+                createdAt: recomment.created_at,
+                updatedAt: recomment.updated_at,
+                user: {
+                  nickname: recomment._.user.nickname,
+                },
+              }),
+              comment._.comments
+            ),
           }),
           board._.comments
         ),
