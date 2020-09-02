@@ -39,6 +39,7 @@ export const anD = (...sqls) => and(...sqls, no_del);
 
 export const WQ = (sql) => SQL`WHERE ${toEQ(sql)}`;
 
+export const Wand = (...sqls) => WQ(and(...sqls));
 export const Wor = (...sqls) => WQ(or(...sqls));
 export const WanD = (...sqls) => WQ(anD(...sqls));
 
@@ -46,6 +47,6 @@ export const findUserByPk = (user_pk) => {
   return QUERY`SELECT * FROM users ${WQ({ pk: user_pk })}`;
 };
 
-const is_null = (cl) => SQL`${CL(cl)} IS NULL`;
+export const is_null = (cl) => SQL`${CL(cl)} IS NULL`;
 
 export const no_del = is_null('deleted_at');

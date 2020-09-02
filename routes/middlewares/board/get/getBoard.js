@@ -1,6 +1,6 @@
 import _ from 'fxjs/Strict';
 
-import { SQL, WQ, no_del, ASSOCIATE, WanD, CL, QUERY, SET } from '../../../../db';
+import { SQL, WQ, no_del, ASSOCIATE, WanD, CL, QUERY, SET, is_null } from '../../../../db';
 import { catchDBError } from '../../../../error';
 
 const getBoard = async (req, res) => {
@@ -26,7 +26,20 @@ const getBoard = async (req, res) => {
         key: 'pk',
         table: 'users',
         column: CL('nickname'),
-      }}`.catch(catchDBError(res));
+      }}
+      < comments ${{
+        left_key: 'pk',
+        key: 'board_pk',
+      }}
+        - user ${{
+          left_key: 'user_pk',
+          key: 'pk',
+          table: 'users',
+          column: CL('nickname'),
+        }}
+      `.catch(catchDBError(res));
+
+  console.log(boards);
 
   if (!boards.length) {
     return res.status(404).json({
@@ -36,7 +49,7 @@ const getBoard = async (req, res) => {
   }
 
   const responseData = _.each(
-    (obj) => (type == 'list' ? delete obj['content'] : obj),
+    (obj) => (type == 'list' ? (delete obj['content'], delete obj['comments']) : obj),
     _.map(
       (board) => ({
         pk: board.pk,
@@ -48,6 +61,18 @@ const getBoard = async (req, res) => {
         user: {
           nickname: board._.user.nickname,
         },
+        comments: _.map(
+          (comment) => ({
+            pk: comment.pk,
+            content: comment.content,
+            createdAt: comment.created_at,
+            updatedAt: comment.updated_at,
+            user: {
+              nickname: comment._.user.nickname,
+            },
+          }),
+          board._.comments
+        ),
       }),
       boards
     )
