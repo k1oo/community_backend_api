@@ -50,8 +50,6 @@ const getBoard = async (req, res) => {
           }}
       `.catch(catchDBError(res));
 
-  console.log(boards);
-
   if (!boards.length) {
     return res.status(404).json({
       success: false,
