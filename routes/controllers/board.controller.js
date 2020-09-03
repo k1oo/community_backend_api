@@ -34,6 +34,10 @@ import postComment from '../middlewares/board/comment/post/postComment';
 import patchCommentValidation from '../middlewares/board/comment/patch/_validation';
 import patchComment from '../middlewares/board/comment/patch/patchComment';
 
+// deleteComment
+import deleteComment from '../middlewares/board/comment/delete/deleteComment';
+import deleteCommentValidation from '../middlewares/board/comment/delete/_validation';
+
 const router = Router();
 
 router.get('/', getBoardValidation, checkValidation, getBoard);
@@ -46,6 +50,7 @@ router.delete('/', deleteBoardValidation);
 router.post('/like', postBoardLikeValidation);
 router.post('/comment', postCommentValidation);
 router.patch('/comment', patchCommentValidation);
+router.delete('/comment', deleteCommentValidation);
 
 router.use(checkValidation);
 
@@ -55,5 +60,6 @@ router.delete('/', deleteBoard);
 router.post('/like', postBoardLike);
 router.post('/comment', postComment);
 router.patch('/comment', patchComment);
+router.delete('/comment', deleteComment);
 
 export default router;
