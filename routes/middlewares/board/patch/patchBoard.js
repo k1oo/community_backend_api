@@ -3,10 +3,18 @@ import { catchDBError } from '../../../../error';
 
 const patchBoard = async (req, res) => {
   const { board_pk, title, content } = req.body;
+  const user = res.locals.user;
 
   const [board] = await QUERY`SELECT * FROM boards ${WQ({ pk: board_pk })}`.catch(
     catchDBError(res)
   );
+
+  if (user.pk != board.user_pk) {
+    return res.status(403).json({
+      success: false,
+      message: 'forbidden',
+    });
+  }
 
   if (!board) {
     return res.status(412).json({
